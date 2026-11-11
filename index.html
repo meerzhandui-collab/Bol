@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ky">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Айпери & Азимбек — Чакыруу</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: Georgia, serif;
+    background:
+    linear-gradient(rgba(35,25,20,.45),rgba(35,25,20,.45)),
+    radial-gradient(circle,#f8ead7,#b99a72);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow-x: hidden;
+    color: #fff;
+}
+
+.container {
+    width: 100%;
+    max-width: 430px;
+    text-align: center;
+}
+
+/* ENVELOPE */
+
+.envelope-area {
+    position: relative;
+    width: 310px;
+    height: 215px;
+    margin: 60px auto;
+    cursor: pointer;
+    perspective: 1000px;
+}
+
+.envelope {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #f4dfc2;
+    border-radius: 5px;
+    box-shadow: 0 15px 40px rgba(0,0,0,.3);
+}
+
+.envelope:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-left: 155px solid transparent;
+    border-right: 155px solid transparent;
+    border-bottom: 125px solid #e4c49e;
+    z-index: 3;
+}
+
+.flap {
+    position: absolute;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-left: 155px solid transparent;
+    border-right: 155px solid transparent;
+    border-top: 125px solid #d4ad7d;
+    transform-origin: top;
+    transition: transform 1s ease;
+    z-index: 5;
+}
+
+.seal {
+    position: absolute;
+    width: 55px;
+    height: 55px;
+    background: #a77b42;
+    border: 3px solid #e8cf9c;
+    border-radius: 50%;
+    left: 50%;
+    top: 105px;
+    transform: translateX(-50%);
+    z-index: 6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+    color: white;
+}
+
+.envelope-text {
+    position: absolute;
+    top: 145px;
+    width: 100%;
+    color: #76512d;
+    font-size: 17px;
+    z-index: 4;
+}
+
+.envelope-area.open .flap {
+    transform: rotateX(180deg);
+    z-index: 1;
+}
+
+.envelope-area.open {
+    opacity: 0;
+    transform: translateY(100px);
+    transition: 1s;
+}
+
+/* INVITATION */
+
+.invitation {
+    display: none;
+    max-width: 430px;
+    width: 100%;
+    background:
+    linear-gradient(rgba(255,252,244,.94),rgba(255,252,244,.94)),
+    #fff;
+    color: #76552e;
+    padding: 35px 23px;
+    border: 4px double #c5a46c;
+    outline: 1px solid #e8d5ad;
+    outline-offset: 7px;
+    box-shadow: 0 15px 45px rgba(0,0,0,.3);
+    animation: appear 2s ease;
+    position: relative;
+}
+
+.invitation.show {
+    display: block;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.flower {
+    font-size: 32px;
+    margin: 8px;
+}
+
+.small-title {
+    font-size: 14px;
+    letter-spacing: 4px;
+    color: #987343;
+    margin: 12px 0;
+}
+
+.names {
+    font-size: 39px;
+    color: #a27a43;
+    font-weight: normal;
+    line-height: 1.5;
+}
+
+.amp {
+    font-size: 25px;
+    color: #c29c60;
+}
+
+.divider {
+    width: 130px;
+    height: 1px;
+    background: #c5a46c;
+    margin: 18px auto;
+}
+
+.message {
+    font-size: 17px;
+    line-height: 1.8;
+    color: #6d563b;
+    margin: 20px 0;
+}
+
+.event {
+    font-size: 23px;
+    color: #a27a43;
+    margin: 15px 0;
+}
+
+.date {
+    font-size: 26px;
+    color: #987343;
+    margin: 18px 0;
+}
+
+.location {
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+.bottom {
+    margin-top: 25px;
+    font-size: 18px;
+    line-height: 1.8;
+    color: #8d6b3d;
+}
+
+.music-button {
+    margin-top: 20px;
+    border: 1px solid #b18a53;
+    background: transparent;
+    padding: 10px 22px;
+    color: #896538;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.hint {
+    font-size: 14px;
+    color: #fff;
+    letter-spacing: 2px;
+    margin-top: -35px;
+}
+
+.hidden {
+    display: none;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="envelope-area" id="envelope"
+onclick="openInvitation()">
+
+    <div class="envelope"></div>
+
+    <div class="flap"></div>
+
+    <div class="envelope-text">
+        Сиздерге өзгөчө чакыруу
+    </div>
+
+    <div class="seal">♥</div>
+
+</div>
+
+<div class="hint" id="hint">
+    ✨ ЧАКЫРУУНУ АЧЫҢЫЗ ✨
+</div>
+
+
+<div class="invitation" id="invitation">
+
+    <div class="flower">🤍🌸🤍</div>
+
+    <div class="small-title">
+        ТОЙГО ЧАКЫРУУ
+    </div>
+
+    <div class="divider"></div>
+
+    <p class="message">
+        Урматтуу жээндерибиз!
+        <br><br>
+        Сиздерди үй-бүлөбүз үчүн
+        өзгөчө кубанычтуу күнгө —
+        келин той жана үй тойубузга
+        чын жүрөктөн чакырабыз!
+        <br><br>
+        Бул кубанычтуу күнү биздин
+        сыйлуу коногубуз болуп,
+        ак тилек, жакшы каалоолоруңуздар
+        менен бөлүшүп кетишиңиздерди
+        каалайбыз.
+    </p>
+
+    <div class="divider"></div>
+
+    <div class="names">
+        Айпери
+        <div class="amp">&</div>
+        Азимбек
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="event">
+        КЕЛИН ТОЙ • ҮЙ ТОЙ
+    </div>
+
+    <div class="date">
+        25 • 11 • 2026
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="location">
+        📍 Өтүүчү жери:
+        <br>
+        Үйдө
+        <br><br>
+        🏡 Үйүбүздүн төрүнөн
+        орун алып, кубанычыбызга
+        ортоктош болуңуздар!
+    </div>
+
+    <div class="bottom">
+        Сиздерди чыдамсыздык менен күтөбүз!
+        <br>
+        🤍 Айпери & Азимбек 🤍
+    </div>
+
+    <div class="flower">
+        🌸🤍🌸
+    </div>
+
+    <button class="music-button"
+    onclick="toggleMusic()" id="musicBtn">
+        🔊 Музыка
+    </button>
+
+</div>
+</div>
+
+
+<script>
+
+/* OPEN ENVELOPE */
+
+let opened = false;
+
+function openInvitation() {
+
+    if(opened) return;
+
+    opened = true;
+
+    document.getElementById("envelope")
+    .classList.add("open");
+
+    document.getElementById("hint")
+    .classList.add("hidden");
+
+    setTimeout(() => {
+
+        document.getElementById("envelope")
+        .style.display = "none";
+
+        document.getElementById("invitation")
+        .classList.add("show");
+
+        startMusic();
+
+    }, 1100);
+
+}
+
+
+/* BUILT-IN INSTRUMENTAL MUSIC */
+
+let audioContext;
+let musicTimer;
+let musicPlaying = false;
+
+function startMusic() {
+
+    if(!audioContext) {
+        audioContext = new
+        (window.AudioContext ||
+        window.webkitAudioContext)();
+    }
+
+    audioContext.resume();
+
+    musicPlaying = true;
+
+    const notes = [
+        523.25, 659.25, 783.99, 659.25,
+        587.33, 698.46, 880, 698.46,
+        523.25, 659.25, 783.99, 1046.5,
+        880, 783.99, 659.25, 523.25
+    ];
+
+    let index = 0;
+
+    function playNote() {
+
+        if(!musicPlaying) return;
+
+        const oscillator =
+        audioContext.createOscillator();
+
+        const gain =
+        audioContext.createGain();
+
+        oscillator.type = "sine";
+
+        oscillator.frequency.value =
+        notes[index % notes.length];
+
+        gain.gain.setValueAtTime(
+        0.0001, audioContext.currentTime);
+
+        gain.gain.exponentialRampToValueAtTime(
+        0.10, audioContext.currentTime + 0.08);
+
+        gain.gain.exponentialRampToValueAtTime(
+        0.0001, audioContext.currentTime + 0.8);
+
+        oscillator.connect(gain);
+        gain.connect(audioContext.destination);
+
+        oscillator.start();
+        oscillator.stop(
+        audioContext.currentTime + 0.85);
+
+        index++;
+
+    }
+
+    playNote();
+
+    musicTimer = setInterval(playNote, 650);
+
+    document.getElementById("musicBtn")
+    .innerHTML = "🔊 Музыка күйүп турат";
+
+}
+
+
+function toggleMusic() {
+
+    if(!audioContext) {
+        startMusic();
+        return;
+    }
+
+    if(musicPlaying) {
+
+        musicPlaying = false;
+        clearInterval(musicTimer);
+
+        document.getElementById("musicBtn")
+        .innerHTML = "🔇 Музыканы күйгүзүү";
+
+    } else {
+
+        startMusic();
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
